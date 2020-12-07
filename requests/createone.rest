@@ -1,0 +1,11 @@
+﻿POST http://localhost:3003/api/subtitles 
+Content-Type: application/json
+
+{
+    "channelTitle" : "channel",
+    "videoId": "xx31xx31xx3",
+    "text": [
+        "line1",
+        "line2"
+    ]
+}
