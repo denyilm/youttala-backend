@@ -1,8 +1,22 @@
 {
-  "short_name": "youttala",
-  "name": "youttala - Learn how to pronounce in Swedish on YouTube",
+  "short_name": "React App",
+  "name": "Create React App Sample",
   "icons": [
-
+    {
+      "src": "youttala.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "youttala192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "youttala512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
   ],
   "start_url": ".",
   "display": "standalone",
