@@ -11,6 +11,9 @@ const subtitleSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  buggyLines: {
+    type: Array
+  },
   text: {
     type: Array
   }

@@ -3,6 +3,7 @@
 const subtitlesRouter = require('express').Router()
 const Subtitle = require('../models/subtitle')
 const fs = require('fs')
+const { text } = require('express')
 
 subtitlesRouter.get('/', async (req, res) => {
   const subtitles = await Subtitle.find({})
@@ -34,10 +35,81 @@ subtitlesRouter.post('/', async(req, res) => {
 })
 
 subtitlesRouter.delete('/', async(req, res) => {
-  const channelTitle = req.body.channelTitle
-  console.log(channelTitle)
-  const deletedSubtitles = await Subtitle.collection.deleteMany({ channelTitle : channelTitle })
-  console.log({ "number of deleted subtitles" : deletedSubtitles.deletedCount })
+
+  if(req.body.channelTitle){
+    const channelTitle = req.body.channelTitle
+    console.log(channelTitle)
+    const deletedSubtitles = await Subtitle.collection.deleteMany({ channelTitle : channelTitle })
+    console.log({ "number of deleted subtitles" : deletedSubtitles.deletedCount })
+  }else if(req.body.videoId){
+    const videoId = req.body.videoId
+    console.log(videoId)
+    const deletedSubtitle = await Subtitle.collection.deleteOne({ videoId : videoId })
+    console.log({ "number of deleted subtitles" : deletedSubtitle.deletedCount })
+  } else {
+    const deletedSubtitles = await Subtitle.collection.deleteMany({})
+    console.log({ "number of deleted subtitles" : deletedSubtitles.deletedCount })
+  }
+
 })
+
+/*
+subtitlesRouter.put('/:id', async(req, res) => {
+  const body = req.body
+
+  const subtitle = {
+    buggyLines : body.buggyLines
+  }
+
+  const updatedSubtitle = await Subtitle.findByIdAndUpdate(req.params.id, subtitle, { new: true })
+  res.json(updatedSubtitle.toJSON().id)
+})
+*/
+
+//OBS! DISABLE THIS when removing the buggy lines
+subtitlesRouter.put('/:videoId', async(req, res) => {
+  const body = req.body
+
+  const subtitle = {
+    buggyLines : body.buggyLines
+  }
+
+  const updatedSubtitle = await Subtitle.findOneAndUpdate({ videoId : req.params.videoId }, subtitle, { new: true })
+  res.json(updatedSubtitle.toJSON())
+})
+
+
+//OBS! ENABLE ONLY for Admin for correcting the buggy lines
+/*
+subtitlesRouter.put('/:id', async(req, res) => {
+  const body = req.body
+
+  const subtitle = {
+    id: body.id,
+    buggyLines : body.buggyLines,
+    text: body.text
+  }
+
+  const updatedSubtitle = await Subtitle.findByIdAndUpdate(req.params.id, subtitle, { new: true })
+  res.json(updatedSubtitle.toJSON())
+})
+*/
+
+
+subtitlesRouter.get('/:videoId', async(req, res) => {
+  const subtitle = await Subtitle.findOne({ videoId : req.params.videoId })
+  res.json(subtitle.toJSON())
+})
+
+/* These two cannot be enabled at the same time
+subtitlesRouter.get('/:id', async(req, res) => {
+  const subtitle = await Subtitle.findById(req.params.id)
+  res.json(subtitle.toJSON())
+})
+*/
+
+
+
+
 
 module.exports = subtitlesRouter

@@ -1,2 +1,4 @@
 ﻿node_modules
 .env
+youttala_ssl.crt
+youttala_ssl.key
