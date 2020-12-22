@@ -1,7 +1,6 @@
 ﻿/* eslint-disable no-unused-vars */
 const config = require('./utils/config')
 //added 221220
-const sslRedirect = require('heroku-ssl-redirect').default
 const express = require('express')
 //requires downloading the package
 require('express-async-errors')
@@ -25,12 +24,6 @@ app.use(express.static('build'))
 app.use(express.json())
 app.use(middleware.requestLogger)
 
-//added 221220
-app.use(sslRedirect())
-app.get('/', (req, res) => {
-  res.send('hello world')
-})
-//
 
 app.use('/api/subtitles', subtitlesRouter)
 
