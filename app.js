@@ -28,7 +28,7 @@ app.use(middleware.requestLogger)
 //added 221220
 app.use(sslRedirect())
 app.get('/', (req, res) => {
-  res.send('hello world');
+  res.send('hello world')
 })
 //
 
