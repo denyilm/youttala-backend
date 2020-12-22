@@ -16,6 +16,7 @@
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "heroku": "^7.47.4",
+    "heroku-ssl-redirect": "^0.1.1",
     "mongoose": "^5.11.4",
     "node-forge": "^0.10.0"
   },
