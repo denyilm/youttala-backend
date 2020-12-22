@@ -27,6 +27,11 @@ app.use(middleware.requestLogger)
 
 //added 221220
 app.use(sslRedirect())
+app.get('/', (req, res) => {
+  res.send('hello world');
+})
+//
+
 app.use('/api/subtitles', subtitlesRouter)
 
 app.use(middleware.unknownEndPoint)
