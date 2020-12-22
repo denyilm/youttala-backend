@@ -1,7 +1,8 @@
 ﻿/* eslint-disable no-unused-vars */
 const config = require('./utils/config')
-//added 221220
 const express = require('express')
+//added 221220
+const enforce = require('express-sslify')
 //requires downloading the package
 require('express-async-errors')
 const app = express()
@@ -19,11 +20,12 @@ mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology
     logger.error(`error connection to the database: ${config.DB_NAME}`, error.message)
   })
 
+
+app.use(enforce.HTTPS({ trustProtoHeader: true }))
 app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())
 app.use(middleware.requestLogger)
-
 
 app.use('/api/subtitles', subtitlesRouter)
 
