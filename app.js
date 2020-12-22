@@ -1,7 +1,7 @@
-﻿import sslRedirect from 'heroku-ssl-redirect'
-/* eslint-disable no-unused-vars */
+﻿/* eslint-disable no-unused-vars */
 const config = require('./utils/config')
 //added 221220
+const sslRedirect = require('heroku-ssl-redirect').default
 const express = require('express')
 //requires downloading the package
 require('express-async-errors')
