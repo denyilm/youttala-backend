@@ -2,5 +2,5 @@
 Content-Type: application/json
 
 {
-    "channelTitle" : "THE SWEDISH FAMILY"
+    "channelTitle" : "TeslaToel"
 }

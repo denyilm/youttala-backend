@@ -1,10 +1,7 @@
-﻿/* eslint-disable no-unused-vars */
-const config = require('./utils/config')
-var sslRedirect = require('heroku-ssl-redirect')
+﻿const config = require('./utils/config')
 const express = require('express')
 //requires downloading the package
 require('express-async-errors')
-//added 221220
 const app = express()
 const cors = require('cors')
 const subtitlesRouter = require('./controllers/subtitles')
@@ -29,6 +26,5 @@ app.use('/api/subtitles', subtitlesRouter)
 
 app.use(middleware.unknownEndPoint)
 app.use(middleware.errorHandler)
-app.use(sslRedirect())
 
 module.exports = app
