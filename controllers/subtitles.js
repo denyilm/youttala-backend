@@ -3,7 +3,13 @@
 const subtitlesRouter = require('express').Router()
 const Subtitle = require('../models/subtitle')
 const fs = require('fs')
-const { text } = require('express')
+
+/*
+subtitlesRouter.get('/', async (req, res) => {
+  const subtitles = await Subtitle.find({})
+  res.json(subtitles.map(subtitle => subtitle.toJSON()))
+})
+*/
 
 subtitlesRouter.get('/', async (req, res) => {
   const subtitles = await Subtitle.find({})
