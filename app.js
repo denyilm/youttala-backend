@@ -2,7 +2,7 @@
 const config = require('./utils/config')
 const express = require('express')
 //added 221220
-const enforce = require('express-sslify')
+//const enforce = require('express-sslify')
 //requires downloading the package
 require('express-async-errors')
 const app = express()
@@ -21,7 +21,7 @@ mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology
   })
 
 
-app.use(enforce.HTTPS({ trustProtoHeader: true }))
+//app.use(enforce.HTTPS({ trustProtoHeader: true }))
 app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())

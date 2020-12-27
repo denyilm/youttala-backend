@@ -1,0 +1,2 @@
+(this["webpackJsonpyouttala-frontend"]=this["webpackJsonpyouttala-frontend"]||[]).push([[0],{28:function(n,t,e){},60:function(n,t,e){"use strict";e.r(t);var s=e(0),c=(e(1),e(19)),o=e.n(c);e(28),e(3),e(5),e(2),e(8);e(20);var a=e(4),i=function(){return Object(s.jsx)("div",{className:"launch",children:Object(s.jsxs)("span",{id:"coming-soon",children:["will be back soon! ",Object(s.jsx)(a.m,{size:23})]})})};o.a.render(Object(s.jsx)(i,{}),document.getElementById("root"))}},[[60,1,2]]]);
+//# sourceMappingURL=main.e028d8d7.chunk.js.map
