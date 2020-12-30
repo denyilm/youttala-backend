@@ -1,4 +1,4 @@
-﻿DELETE http://localhost:3003/api/subtitles
+﻿DELETE http://localhost:3002/api/subtitles
 Content-Type: application/json
 
 {

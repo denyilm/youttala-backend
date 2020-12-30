@@ -12,7 +12,10 @@ subtitlesRouter.get('/', async (req, res) => {
 */
 
 subtitlesRouter.get('/', async (req, res) => {
+  //console.log(req)
+  console.log(req.headers.host)
   const subtitles = await Subtitle.find({})
+  console.log(subtitles.length)
   res.json(subtitles.map(subtitle => subtitle.toJSON()))
 })
 
