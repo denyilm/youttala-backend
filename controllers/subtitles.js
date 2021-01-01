@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 const subtitlesRouter = require('express').Router()
 const Subtitle = require('../models/subtitle')
+const db = require('./db.json')
 const fs = require('fs')
 
 /*
@@ -11,6 +12,10 @@ subtitlesRouter.get('/', async (req, res) => {
 })
 */
 
+
+
+/*
+//old fetch all. Causes a lot of loading time
 subtitlesRouter.get('/', async (req, res) => {
   //console.log(req)
   console.log(req.headers.host)
@@ -18,6 +23,35 @@ subtitlesRouter.get('/', async (req, res) => {
   console.log(subtitles.length)
   res.json(subtitles.map(subtitle => subtitle.toJSON()))
 })
+*/
+
+/*
+//This will be used to download the db from mongodb in order to update the db
+subtitlesRouter.get('/', async (req, res) => {
+  let main_db_json = { 'subtitles' : [] }
+  const subtitles = await Subtitle.find({})
+  main_db_json.subtitles = subtitles
+  const data = JSON.stringify(main_db_json)
+  console.log(subtitles.length)
+  fs.writeFile('db.json', data, (err) => {
+    if (err) {
+      throw err
+    }
+    console.log("JSON data is saved.")
+  })
+  //res.json(subtitles.map(subtitle => subtitle.toJSON()))
+})
+*/
+
+
+//This will be used for the app
+subtitlesRouter.get('/', async (req, res) => {
+  //console.log(req)
+  const subtitles = await db.subtitles
+  res.json(subtitles.map(subtitle => subtitle))
+})
+
+
 
 subtitlesRouter.post('/', async(req, res) => {
   //from the local disk
