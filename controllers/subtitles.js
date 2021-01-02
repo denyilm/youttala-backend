@@ -51,6 +51,20 @@ subtitlesRouter.get('/', async (req, res) => {
   res.json(subtitles.map(subtitle => subtitle))
 })
 
+/*
+//Insert the whole db
+subtitlesRouter.post('/', async (req, res) => {
+  const subtitles = db.subtitles
+  const subtitles_withoutId = subtitles.map(subtitle => subtitle = {
+    "channelTitle" : subtitle.channelTitle,
+    "videoId" : subtitle.videoId,
+    "buggyLines" : subtitle.buggyLines,
+    "text": subtitle.text
+  })
+  const savedSubtitles = await Subtitle.collection.insertMany(subtitles_withoutId)
+  res.json({ "number of subtitles saved" : savedSubtitles.insertedCount })
+})
+*/
 
 
 subtitlesRouter.post('/', async(req, res) => {
@@ -66,6 +80,7 @@ subtitlesRouter.post('/', async(req, res) => {
   res.json({ "number of subtitles saved" : savedSubtitles.insertedCount })
   /*
 
+
   const newSubtitle = new Subtitle({
     channelTitle: body.channelTitle,
     videoId: body.videoId,
@@ -76,6 +91,8 @@ subtitlesRouter.post('/', async(req, res) => {
   res.json(savedSubtitle.toJSON())
   */
 })
+
+
 
 subtitlesRouter.delete('/', async(req, res) => {
 
@@ -139,17 +156,21 @@ subtitlesRouter.put('/:id', async(req, res) => {
 */
 
 
+
 subtitlesRouter.get('/:videoId', async(req, res) => {
   const subtitle = await Subtitle.findOne({ videoId : req.params.videoId })
   res.json(subtitle.toJSON())
 })
 
-/* These two cannot be enabled at the same time
+
+/*
+//These two get routes cannot be enabled at the same time
 subtitlesRouter.get('/:id', async(req, res) => {
   const subtitle = await Subtitle.findById(req.params.id)
   res.json(subtitle.toJSON())
 })
 */
+
 
 
 module.exports = subtitlesRouter
