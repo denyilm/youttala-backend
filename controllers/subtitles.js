@@ -1,7 +1,7 @@
 ﻿/* eslint-disable quotes */
 /* eslint-disable no-unused-vars */
 const subtitlesRouter = require('express').Router()
-const Subtitle = require('../models/subtitle')
+//const Subtitle = require('../models/subtitle')
 const db = require('./db.json')
 const fs = require('fs')
 
@@ -72,6 +72,7 @@ subtitlesRouter.post('/', async (req, res) => {
 */
 
 
+/*
 subtitlesRouter.post('/', async(req, res) => {
   //from the local disk
   const channelTitle = req.body.channelTitle
@@ -94,11 +95,13 @@ subtitlesRouter.post('/', async(req, res) => {
 
   const savedSubtitle = await newSubtitle.save()
   res.json(savedSubtitle.toJSON())
-  */
+  //there was a comment out here
 })
+*/
 
 
 
+/*
 subtitlesRouter.delete('/', async(req, res) => {
 
   if(req.body.channelTitle){
@@ -117,6 +120,7 @@ subtitlesRouter.delete('/', async(req, res) => {
   }
 
 })
+*/
 
 /*
 subtitlesRouter.put('/:id', async(req, res) => {
@@ -131,6 +135,7 @@ subtitlesRouter.put('/:id', async(req, res) => {
 })
 */
 
+/*
 //OBS! DISABLE THIS when removing the buggy lines
 subtitlesRouter.put('/:videoId', async(req, res) => {
   const body = req.body
@@ -142,6 +147,7 @@ subtitlesRouter.put('/:videoId', async(req, res) => {
   const updatedSubtitle = await Subtitle.findOneAndUpdate({ videoId : req.params.videoId }, subtitle, { new: true })
   res.json(updatedSubtitle.toJSON())
 })
+*/
 
 
 //OBS! ENABLE ONLY for Admin for correcting the buggy lines
@@ -161,11 +167,12 @@ subtitlesRouter.put('/:id', async(req, res) => {
 */
 
 
-
+/*
 subtitlesRouter.get('/:videoId', async(req, res) => {
   const subtitle = await Subtitle.findOne({ videoId : req.params.videoId })
   res.json(subtitle.toJSON())
 })
+*/
 
 
 /*
@@ -175,7 +182,5 @@ subtitlesRouter.get('/:id', async(req, res) => {
   res.json(subtitle.toJSON())
 })
 */
-
-
 
 module.exports = subtitlesRouter

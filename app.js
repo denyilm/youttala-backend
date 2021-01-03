@@ -1,4 +1,5 @@
-﻿const config = require('./utils/config')
+﻿/* eslint-disable no-unused-vars */
+const config = require('./utils/config')
 const express = require('express')
 //requires downloading the package
 require('express-async-errors')
@@ -9,6 +10,7 @@ const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 
+/*
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
   .then(() => {
     logger.info('connected to the MongoDB:', config.DB_NAME)
@@ -16,6 +18,7 @@ mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology
   .catch((error) => {
     logger.error(`error connection to the database: ${config.DB_NAME}`, error.message)
   })
+*/
 
 app.use(cors())
 app.use(express.static('build'))
