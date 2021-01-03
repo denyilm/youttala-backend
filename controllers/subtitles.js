@@ -25,6 +25,9 @@ subtitlesRouter.get('/', async (req, res) => {
 })
 */
 
+
+
+
 /*
 //This will be used to download the db from mongodb in order to update the db
 subtitlesRouter.get('/', async (req, res) => {
@@ -50,6 +53,8 @@ subtitlesRouter.get('/', async (req, res) => {
   const subtitles = await db.subtitles
   res.json(subtitles.map(subtitle => subtitle))
 })
+
+
 
 /*
 //Insert the whole db
