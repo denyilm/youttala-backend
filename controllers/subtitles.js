@@ -1,9 +1,11 @@
 ﻿/* eslint-disable quotes */
 /* eslint-disable no-unused-vars */
 const subtitlesRouter = require('express').Router()
-//const Subtitle = require('../models/subtitle')
+const Subtitle = require('../models/subtitle')
 const db = require('./db.json')
 const fs = require('fs')
+const contains = require('../functions/contains')
+const buildYouTubeLinkArray = require('../functions/buildYouTubeLinkArray')
 
 /*
 subtitlesRouter.get('/', async (req, res) => {
@@ -29,7 +31,7 @@ subtitlesRouter.get('/', async (req, res) => {
 
 
 /*
-//This will be used to download the db from mongodb in order to update the db
+//This will be used to download the db from mongodb in order to update the db.json
 subtitlesRouter.get('/', async (req, res) => {
   let main_db_json = { 'subtitles' : [] }
   const subtitles = await Subtitle.find({})
@@ -54,6 +56,24 @@ subtitlesRouter.get('/', async (req, res) => {
   res.json(subtitles.map(subtitle => subtitle))
 })
 
+
+//
+subtitlesRouter.get('/results/:query', async(req, res) => {
+  const subtitles = await db.subtitles
+  let query = await req.params.query
+  let youTubeLinkList = []
+  let videoIDsThatContain = []
+  subtitles.forEach(subtitle => {
+    if(contains(query, subtitle.text)){
+      videoIDsThatContain.push(subtitle.videoId)
+    }
+  })
+  youTubeLinkList = buildYouTubeLinkArray(query, videoIDsThatContain, subtitles)
+  res.json({
+    'videoIDsThatContain': videoIDsThatContain,
+    'youTubeLinkList': youTubeLinkList })
+})
+//
 
 
 /*
@@ -135,7 +155,7 @@ subtitlesRouter.put('/:id', async(req, res) => {
 })
 */
 
-/*
+
 //OBS! DISABLE THIS when removing the buggy lines
 subtitlesRouter.put('/:videoId', async(req, res) => {
   const body = req.body
@@ -147,7 +167,6 @@ subtitlesRouter.put('/:videoId', async(req, res) => {
   const updatedSubtitle = await Subtitle.findOneAndUpdate({ videoId : req.params.videoId }, subtitle, { new: true })
   res.json(updatedSubtitle.toJSON())
 })
-*/
 
 
 //OBS! ENABLE ONLY for Admin for correcting the buggy lines
@@ -167,12 +186,12 @@ subtitlesRouter.put('/:id', async(req, res) => {
 */
 
 
-/*
+
 subtitlesRouter.get('/:videoId', async(req, res) => {
   const subtitle = await Subtitle.findOne({ videoId : req.params.videoId })
   res.json(subtitle.toJSON())
 })
-*/
+
 
 
 /*
