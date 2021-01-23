@@ -31,14 +31,16 @@ app.use(middleware.requestLogger)
 
 app.use('/api/subtitles', subtitlesRouter)
 
-app.use(middleware.unknownEndPoint)
-app.use(middleware.errorHandler)
-
 //added /about
 app.get('*', (req, res) => {
   console.log('Does he send something to thi?')
   res.sendFile(path.join(__dirname, '/build/index.html'))
 })
 //
+
+app.use(middleware.unknownEndPoint)
+app.use(middleware.errorHandler)
+
+
 
 module.exports = app
