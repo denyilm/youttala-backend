@@ -59,7 +59,6 @@ subtitlesRouter.get('/', async (req, res) => {
 
 subtitlesRouter.get('/about', async (req, res) => {
   //console.log(req)
-  res.sendFile(path.join(__dirname, '../build', 'index.html'))
   const subtitles = await db.subtitles
   res.json(subtitles.map(subtitle => subtitle))
 })
