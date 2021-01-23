@@ -37,6 +37,10 @@ app.get('/about', (req, res) => {
 })
 //
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/build/no.html'))
+})
+
 app.use(middleware.unknownEndPoint)
 app.use(middleware.errorHandler)
 
