@@ -32,8 +32,7 @@ app.use(middleware.requestLogger)
 app.use('/api/subtitles', subtitlesRouter)
 
 //added /about
-app.get('*', (req, res) => {
-  console.log('Does he send something to thi?')
+app.get('/about', (req, res) => {
   res.sendFile(path.join(__dirname, '/build/index.html'))
 })
 //
