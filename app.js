@@ -10,7 +10,7 @@ const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 //
-const path = require('path')
+let path = require('path')
 
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
   .then(() => {
@@ -24,8 +24,7 @@ mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology
 app.use(cors())
 app.use(express.static('build'))
 
-//added /about
-//
+
 
 app.use(express.json())
 app.use(middleware.requestLogger)
@@ -34,5 +33,11 @@ app.use('/api/subtitles', subtitlesRouter)
 
 app.use(middleware.unknownEndPoint)
 app.use(middleware.errorHandler)
+
+//added /about
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/client/build/index.html'))
+})
+//
 
 module.exports = app
