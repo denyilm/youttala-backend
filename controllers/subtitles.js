@@ -56,6 +56,11 @@ subtitlesRouter.get('/', async (req, res) => {
   res.json(subtitles.map(subtitle => subtitle))
 })
 
+subtitlesRouter.get('/about', async (req, res) => {
+  //console.log(req)
+  const subtitles = await db.subtitles
+  res.json(subtitles.map(subtitle => subtitle))
+})
 
 //
 subtitlesRouter.get('/results/:query', async(req, res) => {
