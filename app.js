@@ -36,7 +36,8 @@ app.use(middleware.errorHandler)
 
 //added /about
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/client/build/index.html'))
+  console.log('Does he send something to thi?')
+  res.sendFile(path.join(__dirname, '/build/index.html'))
 })
 //
 
