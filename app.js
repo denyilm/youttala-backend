@@ -10,7 +10,7 @@ const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 //
-
+const path = require('path')
 
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
   .then(() => {
@@ -23,6 +23,16 @@ mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology
 
 app.use(cors())
 app.use(express.static('build'))
+
+//added /about
+app.get('/*', (req, res) => {
+  let url = path.join(__dirname, '../client/build', 'index.html')
+  if (!url.startsWith('/app/')) // we're on local windows
+    url = url.substring(1)
+  res.sendFile(url)
+})
+//
+
 app.use(express.json())
 app.use(middleware.requestLogger)
 
