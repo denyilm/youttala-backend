@@ -2,103 +2,123 @@
 /* eslint-disable no-unused-vars */
 const subtitlesRouter = require('express').Router()
 const Subtitle = require('../models/subtitle')
-const db = require('./db.json')
 const fs = require('fs')
-const contains = require('../functions/contains')
-const buildYouTubeLinkArray = require('../functions/buildYouTubeLinkArray')
-const path = require('path')
+const db = require('./db.json')
+const youTubeLinkLists_json = require('./youTubeLinkLists.json')
+const getLexAfterSearch = require('../functions/getLexAfterSearch')
+const getYouTubeLinks = require('../functions/getYouTubeLink')
+const { collection } = require('../models/subtitle')
+//const shuffle = require('../functions/shuffle')
 
-/*
-subtitlesRouter.get('/', async (req, res) => {
-  const subtitles = await Subtitle.find({})
-  res.json(subtitles.map(subtitle => subtitle.toJSON()))
-})
-*/
-
-
-
-/*
-//old fetch all. Causes a lot of loading time
-subtitlesRouter.get('/', async (req, res) => {
-  //console.log(req)
-  console.log(req.headers.host)
-  const subtitles = await Subtitle.find({})
-  console.log(subtitles.length)
-  res.json(subtitles.map(subtitle => subtitle.toJSON()))
-})
-*/
-
-
-
-
-/*
 //This will be used to download the db from mongodb in order to update the db.json
-subtitlesRouter.get('/', async (req, res) => {
+//disable get collection to run this
+/*
+subtitlesRouter.get('/subtitles', async (req, res) => {
   let main_db_json = { 'subtitles' : [] }
   const subtitles = await Subtitle.find({})
   main_db_json.subtitles = subtitles
   const data = JSON.stringify(main_db_json)
-  console.log(subtitles.length)
-  fs.writeFile('db.json', data, (err) => {
+  //console.log(subtitles.length)
+  fs.writeFile('subtitles.json', data, (err) => {
     if (err) {
       throw err
     }
     console.log("JSON data is saved.")
   })
-  //res.json(subtitles.map(subtitle => subtitle.toJSON()))
+  res.json({"number of subtitles downloaded from the mongoDb" : subtitles.length})
 })
 */
 
 
-//This will be used for the app
 subtitlesRouter.get('/', async (req, res) => {
   //console.log(req)
-  const subtitles = await db.subtitles
-  res.json(subtitles.map(subtitle => subtitle))
+  const collections = await db
+  res.json(collections)
 })
+
+//get one collection
+subtitlesRouter.get('/:collection', async (req, res) => {
+  let collection_name = req.params.collection
+  const collection = await db[collection_name]
+  res.json(collection)
+})
+//
 
 subtitlesRouter.get('/about', async (req, res) => {
-  const subtitles = await db.subtitles
-  res.json(subtitles.map(subtitle => subtitle))
+  const collections = await db
+  res.json(collections)
 })
-
-//
-subtitlesRouter.get('/results/:query', async(req, res) => {
-  const subtitles = await db.subtitles
-  let query = await req.params.query
-  let youTubeLinkList = []
-  let videoIDsThatContain = []
-  subtitles.forEach(subtitle => {
-    if(contains(query, subtitle.text)){
-      videoIDsThatContain.push(subtitle.videoId)
-    }
-  })
-  youTubeLinkList = buildYouTubeLinkArray(query, videoIDsThatContain, subtitles)
-  res.json({
-    'videoIDsThatContain': videoIDsThatContain,
-    'youTubeLinkList': youTubeLinkList })
-})
-//
-
 
 /*
-//Insert the whole db
-subtitlesRouter.post('/', async (req, res) => {
-  const subtitles = db.subtitles
-  const subtitles_withoutId = subtitles.map(subtitle => subtitle = {
-    "channelTitle" : subtitle.channelTitle,
-    "videoId" : subtitle.videoId,
-    "buggyLines" : subtitle.buggyLines,
-    "text": subtitle.text
-  })
-  const savedSubtitles = await Subtitle.collection.insertMany(subtitles_withoutId)
-  res.json({ "number of subtitles saved" : savedSubtitles.insertedCount })
+//Just in case if you need only one of the collections
+subtitlesRouter.get('/:collection', async(req, res) => {
+  const collections_key = await req.params.collection
+  console.log(collections_key)
+  const collection = await db[collections_key]
+  console.log(collection.length)
+  const returnThis = {}
+  returnThis[collections_key] = collection
+  res.json(returnThis)
 })
 */
 
+subtitlesRouter.get('/subtitles/results/:query', async(req, res) => {
+  const subtitles = await db.subtitles
+  //let shuffledSubs = shuffle(subtitles)
+  let query = await req.params.query
+  let youTubeLinkList = []
 
-/*
-subtitlesRouter.post('/', async(req, res) => {
+  let results = youTubeLinkLists_json.youTubeLinkLists.find(list => list.query === query)
+
+  if(results !== undefined){
+    youTubeLinkList = results.youTubeLinkList
+    for(let i = 0 ; i < 25 ; i++){
+      let updatedLink = youTubeLinkList[i]
+      updatedLink.text = subtitles.find(subtitle => subtitle.videoId === youTubeLinkList[i].videoId).text
+      youTubeLinkList.splice(i,1,updatedLink)
+    }
+  } else {
+    for(let i = 0 ; i < subtitles.length ; i++){
+      let subtitle = subtitles[i]
+      if(youTubeLinkList.length < 25){
+        let links = getYouTubeLinks(subtitle.text, subtitle.videoId, query, false)
+        if(links.length > 0){
+          youTubeLinkList = youTubeLinkList.concat(links)
+        }
+      } else {
+        let links = getYouTubeLinks(subtitle.text, subtitle.videoId, query, true)
+        if(links.length > 0){
+          youTubeLinkList = youTubeLinkList.concat(links)
+        }
+      }
+      if(youTubeLinkList.length > 1000){
+        break
+      }
+    }
+  }
+
+  //console.log(youTubeLinkList)
+
+  //youTubeLinkList = buildYouTubeLinkArray(query, videoIDsThatContain, subtitles)
+  res.json({
+    //'videoIDsThatContain': videoIDsThatContain,
+    'youTubeLinkList': youTubeLinkList })
+})
+
+
+
+//get words results
+subtitlesRouter.get('/words/results/:query', async(req, res) => {
+  const entries = await db.words
+  const wordlist = await db.wordlist
+  let query = await req.params.query
+  let lexObj = getLexAfterSearch(query, entries, wordlist)
+  //console.log(lexObj)
+  res.json(lexObj)
+})
+
+//post subtitles
+subtitlesRouter.post('/subtitles', async(req, res) => {
   //from the local disk
   const channelTitle = req.body.channelTitle
   let folderName = channelTitle.split(' ').join('_')
@@ -109,24 +129,10 @@ subtitlesRouter.post('/', async(req, res) => {
   //from the local disk ends
   const savedSubtitles = await Subtitle.collection.insertMany(subtitles_json.subtitles)
   res.json({ "number of subtitles saved" : savedSubtitles.insertedCount })
-  /*
-
-
-  const newSubtitle = new Subtitle({
-    channelTitle: body.channelTitle,
-    videoId: body.videoId,
-    text: body.text
-  })
-
-  const savedSubtitle = await newSubtitle.save()
-  res.json(savedSubtitle.toJSON())
-  //there was a comment out here
 })
-*/
+//
 
-
-
-/*
+//
 subtitlesRouter.delete('/', async(req, res) => {
 
   if(req.body.channelTitle){
@@ -145,7 +151,7 @@ subtitlesRouter.delete('/', async(req, res) => {
   }
 
 })
-*/
+//
 
 /*
 subtitlesRouter.put('/:id', async(req, res) => {
@@ -159,7 +165,6 @@ subtitlesRouter.put('/:id', async(req, res) => {
   res.json(updatedSubtitle.toJSON().id)
 })
 */
-
 
 //OBS! DISABLE THIS when removing the buggy lines
 subtitlesRouter.put('/:videoId', async(req, res) => {
@@ -190,21 +195,19 @@ subtitlesRouter.put('/:id', async(req, res) => {
 })
 */
 
-
-
-subtitlesRouter.get('/:videoId', async(req, res) => {
+//
+subtitlesRouter.get('/subtitles/:videoId', async(req, res) => {
   const subtitle = await Subtitle.findOne({ videoId : req.params.videoId })
   res.json(subtitle.toJSON())
 })
+//
 
-
-
-/*
-//These two get routes cannot be enabled at the same time
+/* These two cannot be enabled at the same time
 subtitlesRouter.get('/:id', async(req, res) => {
   const subtitle = await Subtitle.findById(req.params.id)
   res.json(subtitle.toJSON())
 })
 */
+
 
 module.exports = subtitlesRouter

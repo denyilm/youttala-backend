@@ -1,4 +1,4 @@
-﻿/* eslint-disable no-unused-vars */
+﻿/* eslint-disable no-undef */
 const config = require('./utils/config')
 const express = require('express')
 //requires downloading the package
@@ -9,7 +9,6 @@ const subtitlesRouter = require('./controllers/subtitles')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
-//
 let path = require('path')
 
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
@@ -20,16 +19,12 @@ mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology
     logger.error(`error connection to the database: ${config.DB_NAME}`, error.message)
   })
 
-
 app.use(cors())
 app.use(express.static('build'))
-
-
-
 app.use(express.json())
 app.use(middleware.requestLogger)
 
-app.use('/api/subtitles', subtitlesRouter)
+app.use('/api', subtitlesRouter)
 
 //added /about
 app.get('/about', (req, res) => {
@@ -37,13 +32,13 @@ app.get('/about', (req, res) => {
 })
 //
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/build/no.html'))
+//added /privacypolicy
+app.get('/privacypolicy', (req, res) => {
+  res.sendFile(path.join(__dirname, '/build/index.html'))
 })
+//
 
 app.use(middleware.unknownEndPoint)
 app.use(middleware.errorHandler)
-
-
 
 module.exports = app

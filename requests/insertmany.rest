@@ -1,6 +1,0 @@
-﻿POST http://localhost:3002/api/subtitles
-Content-Type: application/json
-
-{
-    "channelTitle" : "THE SWEDISH FAMILY"
-}
