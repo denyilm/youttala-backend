@@ -8,11 +8,11 @@ https://www.youttala.com
 
 youttala is developed by using MERN (MongoDB-Expressjs-Reactjs-Nodejs) stack
 
-youttala-backend github repo:
+Link to youttala-backend github repo:
 
 https://github.com/denyilm/youttala-backend
 
-youttala-backend docker hub repo:
+Link to youttala-backend docker hub repo:
 
 https://hub.docker.com/repository/docker/denyilmaz/youttala-backend
 
