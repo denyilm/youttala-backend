@@ -8,6 +8,14 @@ https://www.youttala.com
 
 youttala is developed by using MERN (MongoDB-Expressjs-Reactjs-Nodejs) stack
 
+youttala-backend github repo:
+
+https://github.com/denyilm/youttala-backend
+
+youttala-backend docker hub repo:
+
+https://hub.docker.com/repository/docker/denyilmaz/youttala-backend
+
 # How to run youttala-backend on a Docker container
 
 1-You need to have Docker downloaded in your machine to run this app with docker.
@@ -28,6 +36,7 @@ docker run -p 3002:3002 denyilmaz/youttala-backend
 Available routes that you can run on your browser to see some data:
 
 http://localhost:3002/api/words
+
 http://localhost:3002/api/subtitles
 
 # How to run youttala-backend on your machine without Docker
