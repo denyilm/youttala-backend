@@ -11,6 +11,7 @@ const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 let path = require('path')
 
+/*
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
   .then(() => {
     logger.info('connected to the MongoDB:', config.DB_NAME)
@@ -18,14 +19,16 @@ mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology
   .catch((error) => {
     logger.error(`error connection to the database: ${config.DB_NAME}`, error.message)
   })
+*/
 
 app.use(cors())
-app.use(express.static('build'))
+//app.use(express.static('build'))
 app.use(express.json())
 app.use(middleware.requestLogger)
 
 app.use('/api', subtitlesRouter)
 
+/*
 //added /about
 app.get('/about', (req, res) => {
   res.sendFile(path.join(__dirname, '/build/index.html'))
@@ -37,6 +40,7 @@ app.get('/privacypolicy', (req, res) => {
   res.sendFile(path.join(__dirname, '/build/index.html'))
 })
 //
+*/
 
 app.use(middleware.unknownEndPoint)
 app.use(middleware.errorHandler)
