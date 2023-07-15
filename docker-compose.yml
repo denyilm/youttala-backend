@@ -7,6 +7,9 @@ services:
     container_name: youttala_backend
     ports:
       - "3002:3002"
+    networks:
+        websites:
+          ipv4_address: 172.20.0.11
     environment:
       - "REACT_APP_BACKEND_URL=http://localhost:3002"
     volumes:
@@ -16,3 +19,8 @@ services:
 # https://devopswithdocker.com/part2/ Containers in development
 volumes:
   node_modules:
+
+networks:
+   websites:
+    name: websites
+    external: true
